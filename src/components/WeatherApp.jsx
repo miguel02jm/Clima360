@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import "./styles/WeatherApp.css";
+import "../styles/WeatherApp.css";
+import fetchWeather from "../helpers/fetchWeather.js";
+import useGeolocation from "../helpers/useGeolocation.js";
+import useTime from "../helpers/useTime.js";
 
 export const WeatherApp = () => {
-  const urlBase = "https://api.openweathermap.org/data/2.5/forecast";
-  const API_KEY = "f6b08b447c5b3aaadd5d8233aff2fada";
-  const days = 5;
+  const cityName = useGeolocation();
+  const todayDate = useTime();
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -28,6 +30,9 @@ export const WeatherApp = () => {
     "November",
     "December",
   ];
+  const dayOfWeek = daysOfWeek[todayDate.getDay()];
+  const dayOfMonth = todayDate.getDate();
+  const monthName = months[todayDate.getMonth()];
 
   const hours = [
     "In 0 hours",
@@ -37,61 +42,8 @@ export const WeatherApp = () => {
     "In 12 hours",
   ];
 
-  const fetchWeather = async () => {
-    try {
-      const response = await fetch(
-        `${urlBase}?q=${city}&cnt=${days}&units=metric&appid=${API_KEY}`
-      );
-      const data = await response.json();
-      setDataWeather(data);
-    } catch (error) {}
-    console.error("Ocurrió el siguiente problema: ", error);
-  };
-
   const [city, setCity] = useState("");
   const [dataWeather, setDataWeather] = useState(null);
-
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 1000); // Actualiza la fecha cada segundo
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const dayOfWeek = daysOfWeek[currentDate.getDay()];
-  const dayOfMonth = currentDate.getDate();
-  const monthName = months[currentDate.getMonth()];
-
-  const [cityName, setCityName] = useState(null);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const response = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-            );
-            const data = await response.json();
-            setCityName(data.address.city || "Unknown City");
-          } catch (error) {
-            console.error("Error fetching city name:", error);
-          }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
 
   const handleChangeCity = (e) => {
     setCity(e.target.value);
@@ -99,7 +51,7 @@ export const WeatherApp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (city.length > 0) fetchWeather();
+    if (city.length > 0) fetchWeather(city, setDataWeather);
   };
 
   return (
@@ -189,28 +141,28 @@ export const WeatherApp = () => {
           <div className="container-fluid mt-2">
             {dataWeather && (
               <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-4">
-                <div key={dataWeather.city.id} className="col">
+                <div key={1} className="col">
                   <div className="container-fluid custom-col-days text-white d-flex flex-column align-items-center justify-content-center">
                     <h5>Precipitation Probability</h5>
-                    <h1>{dataWeather.list[0].pop}%</h1>
+                    <h1>{dataWeather.list[0].pop * 100}%</h1>
                   </div>
                 </div>
 
-                <div key={dataWeather.city.id} className="col">
+                <div key={2} className="col">
                   <div className="container-fluid custom-col-days text-white d-flex flex-column align-items-center justify-content-center">
                     <h5>Humidity</h5>
                     <h1>{dataWeather.list[0].main.humidity}%</h1>
                   </div>
                 </div>
 
-                <div key={dataWeather.city.id} className="col">
+                <div key={3} className="col">
                   <div className="container-fluid custom-col-days text-white d-flex flex-column align-items-center justify-content-center">
                     <h5>Wind Speed</h5>
                     <h1>{dataWeather.list[0].wind.speed} metre/sec</h1>
                   </div>
                 </div>
 
-                <div key={dataWeather.city.id} className="col">
+                <div key={4} className="col">
                   <div className="container-fluid custom-col-days text-white d-flex flex-column align-items-center justify-content-center">
                     <h5>Air Pressure</h5>
                     <h1>{dataWeather.list[0].main.pressure} mb</h1>
