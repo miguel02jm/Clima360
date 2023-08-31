@@ -8,8 +8,9 @@ const fetchWeather = async (city, setDataWeather) => {
     );
     const data = await response.json();
     setDataWeather(data);
-  } catch (error) {}
-  console.error("Ocurrió el siguiente problema: ", error);
+  } catch (error) {
+    console.error("Ocurrió el siguiente problema: ", error);
+  }
 };
 
 export default fetchWeather;
