@@ -1,0 +1,40 @@
+.custom-col2-dark{
+    background-color: #242b31;
+    color: white; 
+}
+
+.custom-col-data-dark{
+    background-color: #343F4B;
+    color: white; 
+}
+
+.custom-col2-light{
+    background-color: #F5F5F5;
+    color: black;
+}
+
+.custom-col-data-light{
+    background-color: #E4E4D0; 
+    color: black;
+}
+
+.custom-btn{
+    background: transparent;
+    border: none;
+}
+
+
+.number-counter {
+    animation: countUp 2s ease-in-out forwards;
+  }
+  
+  @keyframes countUp {
+    from {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
