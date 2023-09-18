@@ -16,7 +16,8 @@ function SearchSection({
     <div
       className={`container ${
         isDarkMode ? "custom-col-dark" : "custom-col-light"
-      } col-md-3`}
+      } col-md-3 d-flex flex-column justify-content-between`}
+      style={{ minHeight: "100vh" }}
     >
       <form onSubmit={handleSubmit}>
         <div className="input-group mt-3">
@@ -38,9 +39,9 @@ function SearchSection({
         </div>
       </form>
 
-      <div className="container-fluid mt-2">
-        {dataWeather && (
-          <div className="row flex-column">
+      <div className="container-fluid mt-2 flex-grow-1">
+        <div className="row flex-column">
+          {dataWeather !== null && dataWeather !== undefined ? (
             <div
               key={dataWeather.city.id}
               className="col d-flex flex-column align-items-center justify-content-center"
@@ -62,22 +63,27 @@ function SearchSection({
                 {dataWeather.list[0].weather[0].description}
               </h2>
             </div>
-            <div className="container mt-5">
-              <div className="row mt-5">
-                <div className="col d-flex flex-column align-items-center justify-content-center">
-                  <p className="text-secondary">
-                    {dayOfWeek}, {dayOfMonth} {monthName}
-                  </p>
-                  {cityName ? (
-                    <p className="text-secondary">{cityName}</p>
-                  ) : (
-                    <p className="text-secondary">Loading...</p>
-                  )}
-                </div>
-              </div>
+          ) : (
+            <div className="container d-flex align-items-center justify-content-center mt-5">
+              <h2 className="text-secondary mt-5">No info</h2>
             </div>
+          )}
+        </div>
+      </div>
+
+      <div className="container mt-5">
+        <div className="row mt-5">
+          <div className="col d-flex flex-column align-items-center justify-content-center">
+            <p className="text-secondary">
+              {dayOfWeek}, {dayOfMonth} {monthName}
+            </p>
+            {cityName ? (
+              <p className="text-secondary">{cityName}</p>
+            ) : (
+              <p className="text-secondary">Loading...</p>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

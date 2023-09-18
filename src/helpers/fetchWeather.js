@@ -6,10 +6,16 @@ const fetchWeather = async (city, setDataWeather) => {
     const response = await fetch(
       `${urlBase}?q=${city}&cnt=${intervals}&units=metric&appid=${API_KEY}`
     );
+
+    if (!response.ok) {
+      throw new Error("City not found");
+    }
+
     const data = await response.json();
     setDataWeather(data);
   } catch (error) {
     console.error("Ocurrió el siguiente problema: ", error);
+    setDataWeather(null);
   }
 };
 

@@ -48,7 +48,10 @@ export const WeatherApp = () => {
 
   const [city, setCity] = useState("");
   const [dataWeather, setDataWeather] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    return savedDarkMode !== null ? savedDarkMode : false;
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +64,11 @@ export const WeatherApp = () => {
   }, [cityName]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem("darkMode", JSON.stringify(newMode));
+      return newMode;
+    });
   };
 
   const handleChangeCity = (e) => {
@@ -74,27 +81,29 @@ export const WeatherApp = () => {
   };
 
   return (
-    <div className="main-container">
-      <div className="container-fluid custom-container">
-        <div className="row vh-100">
-          <SearchSection
-            isDarkMode={isDarkMode}
-            city={city}
-            dataWeather={dataWeather}
-            cityName={cityName}
-            dayOfWeek={dayOfWeek}
-            dayOfMonth={dayOfMonth}
-            monthName={monthName}
-            handleSubmit={handleSubmit}
-            handleChangeCity={handleChangeCity}
-          ></SearchSection>
+    <div>
+      <div className="main-container">
+        <div className="container-fluid custom-container">
+          <div className="row vh-100">
+            <SearchSection
+              isDarkMode={isDarkMode}
+              city={city}
+              dataWeather={dataWeather}
+              cityName={cityName}
+              dayOfWeek={dayOfWeek}
+              dayOfMonth={dayOfMonth}
+              monthName={monthName}
+              handleSubmit={handleSubmit}
+              handleChangeCity={handleChangeCity}
+            ></SearchSection>
 
-          <ParametersSection
-            isDarkMode={isDarkMode}
-            dataWeather={dataWeather}
-            toggleDarkMode={toggleDarkMode}
-            hours={hours}
-          ></ParametersSection>
+            <ParametersSection
+              isDarkMode={isDarkMode}
+              dataWeather={dataWeather}
+              toggleDarkMode={toggleDarkMode}
+              hours={hours}
+            ></ParametersSection>
+          </div>
         </div>
       </div>
     </div>
