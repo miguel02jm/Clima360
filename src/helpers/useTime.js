@@ -6,7 +6,7 @@ const useTime = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentDate(new Date());
-    }, 1000); // Actualiza la fecha cada segundo
+    }, 1000);
 
     return () => {
       clearInterval(interval);

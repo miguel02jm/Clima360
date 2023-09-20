@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import "../styles/WeatherApp.css";
-import fetchWeather from "../helpers/fetchWeather.js";
-import fetchInitialWeather from "../helpers/fetchInitialWeather.js";
-import useGeolocation from "../helpers/useGeolocation.js";
-import useTime from "../helpers/useTime.js";
 import SearchSection from "./SearchSection";
 import ParametersSection from "./ParametersSection";
+import fetchWeather from "../helpers/fetchWeather.js";
+import useGeolocation from "../helpers/useGeolocation.js";
+import useTime from "../helpers/useTime.js";
+import "../styles/WeatherApp.css";
 
 export const WeatherApp = () => {
   const cityName = useGeolocation();
@@ -38,14 +37,6 @@ export const WeatherApp = () => {
   const dayOfMonth = todayDate.getDate();
   const monthName = months[todayDate.getMonth()];
 
-  const hours = [
-    "In 0 hours",
-    "In 3 hours",
-    "In 6 hours",
-    "In 9 hours",
-    "In 12 hours",
-  ];
-
   const [city, setCity] = useState("");
   const [dataWeather, setDataWeather] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -56,7 +47,7 @@ export const WeatherApp = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (cityName && cityName.length > 0) {
-        fetchInitialWeather(cityName, setDataWeather);
+        fetchWeather(cityName, setDataWeather);
       }
     };
 
@@ -81,30 +72,24 @@ export const WeatherApp = () => {
   };
 
   return (
-    <div>
-      <div className="main-container">
-        <div className="container-fluid custom-container">
-          <div className="row vh-100">
-            <SearchSection
-              isDarkMode={isDarkMode}
-              city={city}
-              dataWeather={dataWeather}
-              cityName={cityName}
-              dayOfWeek={dayOfWeek}
-              dayOfMonth={dayOfMonth}
-              monthName={monthName}
-              handleSubmit={handleSubmit}
-              handleChangeCity={handleChangeCity}
-            ></SearchSection>
+    <div className="container-fluid custom-container">
+      <div className="row">
+        <SearchSection
+          isDarkMode={isDarkMode}
+          dataWeather={dataWeather}
+          cityName={cityName}
+          dayOfWeek={dayOfWeek}
+          dayOfMonth={dayOfMonth}
+          monthName={monthName}
+          handleSubmit={handleSubmit}
+          handleChangeCity={handleChangeCity}
+        ></SearchSection>
 
-            <ParametersSection
-              isDarkMode={isDarkMode}
-              dataWeather={dataWeather}
-              toggleDarkMode={toggleDarkMode}
-              hours={hours}
-            ></ParametersSection>
-          </div>
-        </div>
+        <ParametersSection
+          isDarkMode={isDarkMode}
+          dataWeather={dataWeather}
+          toggleDarkMode={toggleDarkMode}
+        ></ParametersSection>
       </div>
     </div>
   );

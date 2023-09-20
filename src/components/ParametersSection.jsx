@@ -1,15 +1,16 @@
 import React from "react";
+import OtherParameters from "./OtherParameters";
+import NextHoursInfoComponent from "./NextHoursrInfoComponent";
 import "../styles/ParametersSection.css";
 
-function ParametersSection({ isDarkMode, dataWeather, toggleDarkMode, hours }) {
+function ParametersSection({ isDarkMode, dataWeather, toggleDarkMode }) {
   return (
     <div
       className={`container ${
         isDarkMode ? "custom-col2-dark" : "custom-col2-light"
       } col-md-9 d-flex flex-column`}
-      style={{ minHeight: "100vh" }}
     >
-      <div className="container-fluid d-flex align-items-center justify-content-end mt-2">
+      <div className="container d-flex justify-content-end mt-2">
         <button className="custom-btn" onClick={toggleDarkMode}>
           {isDarkMode ? (
             <svg
@@ -49,135 +50,31 @@ function ParametersSection({ isDarkMode, dataWeather, toggleDarkMode, hours }) {
       </div>
       {dataWeather !== null && dataWeather !== undefined ? (
         <div>
-          <div className="container-fluid d-flex align-items-center justify-content-center mt-3">
-            <h3 className="mt-3">In the following hours...</h3>
-          </div>
-          <div className="container-fluid">
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 pt-3">
-              {[1, 2, 3, 4].map((index) => (
-                <div key={index} className="col">
-                  <div
-                    className={`container ${
-                      isDarkMode
-                        ? "custom-col-data-dark"
-                        : "custom-col-data-light"
-                    } flex-column d-flex align-items-center justify-content-center`}
-                  >
-                    <div className="container-fluid d-flex align-items-center justify-content-left">
-                      {hours[index]}...
-                    </div>
-                    <img
-                      src={`https://openweathermap.org/img/wn/${dataWeather.list[index].weather[0].icon}@2x.png`}
-                    />
-                    <h5 className="text-secondary">
-                      {dataWeather.list[0].weather[0].description}
-                    </h5>
-                    <div className="container-fluid d-flex align-items-center justify-content-between">
-                      <div>{parseInt(dataWeather.list[index].main.temp)}ºC</div>
-                      <div>{parseInt(dataWeather.list[0].pop * 100)}%</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="container-fluid d-flex align-items-center justify-content-center mt-5">
-            <h3 className="mt-3">Relevant Parameters</h3>
-          </div>
-          <div className="container-fluid mt-2">
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-4">
-              <div key={1} className="col">
-                <div
-                  className={`container ${
-                    isDarkMode
-                      ? "custom-col-data-dark"
-                      : "custom-col-data-light"
-                  } flex-column d-flex align-items-center justify-content-center`}
-                >
-                  <h5 className="mt-2">Precipitation Probability</h5>
-                  <div className="d-flex align-items-center justify-content-center">
-                    <h1 className="display-2 number-counter">
-                      {parseInt(dataWeather.list[0].pop * 100)}
-                    </h1>
-                    <h1>%</h1>
-                  </div>
-                </div>
-              </div>
-
-              <div key={2} className="col">
-                <div
-                  className={`container ${
-                    isDarkMode
-                      ? "custom-col-data-dark"
-                      : "custom-col-data-light"
-                  } flex-column d-flex align-items-center justify-content-center`}
-                >
-                  <h5 className="mt-2">Humidity</h5>
-                  <div className="d-flex align-items-center justify-content-center">
-                    <h1 className="display-2 number-counter">
-                      {dataWeather.list[0].main.humidity}
-                    </h1>
-                    <h1>%</h1>
-                  </div>
-                </div>
-              </div>
-
-              <div key={3} className="col">
-                <div
-                  className={`container ${
-                    isDarkMode
-                      ? "custom-col-data-dark"
-                      : "custom-col-data-light"
-                  } flex-column d-flex align-items-center justify-content-center`}
-                >
-                  <h5 className="mt-2">Wind Speed</h5>
-                  <div className="d-flex align-items-center justify-content-center">
-                    <h1 className="display-2 number-counter me-2">
-                      {dataWeather.list[0].wind.speed}
-                    </h1>
-                    <h1>m/s</h1>
-                  </div>
-                </div>
-              </div>
-
-              <div key={4} className="col">
-                <div
-                  className={`container ${
-                    isDarkMode
-                      ? "custom-col-data-dark"
-                      : "custom-col-data-light"
-                  } flex-column d-flex align-items-center justify-content-center`}
-                >
-                  <h5 className="mt-2">Air Pressure</h5>
-                  <div className="d-flex align-items-center justify-content-center">
-                    <h1 className="display-2 number-counter me-2">
-                      {dataWeather.list[0].main.pressure}
-                    </h1>
-                    <h1> mb</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <NextHoursInfoComponent
+            isDarkMode={isDarkMode}
+            dataWeather={dataWeather}
+          ></NextHoursInfoComponent>
+          <OtherParameters
+            isDarkMode={isDarkMode}
+            dataWeather={dataWeather}
+          ></OtherParameters>
         </div>
       ) : (
         <div className="container d-flex align-items-center justify-content-center mt-5">
           <h2 className="text-secondary mt-5">No info</h2>
         </div>
       )}
-      <div className="container d-flex flex-column align-items-center justify-content-center mt-auto">
-        <div className="mt-2">
-          <p>
-            Created by
-            <a
-              className="text-decoration-none"
-              href="https://migueljaendev.netlify.app/"
-            >
-              {" "}
-              Miguel Developer
-            </a>
-          </p>
-        </div>
+      <div className="container d-flex align-items-center justify-content-center mt-auto">
+        <p>
+          Created by
+          <a
+            className="text-decoration-none"
+            href="https://migueljaendev.netlify.app/"
+          >
+            {" "}
+            Miguel Developer
+          </a>
+        </p>
       </div>
     </div>
   );
